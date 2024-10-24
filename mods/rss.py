@@ -21,7 +21,7 @@ from urllib.parse import quote_plus, urlencode
 
 from ..main    import fmt
 from ..object  import Object, update
-from ..persist import Cache, find, fntime, laps, last, sync
+from ..persist import Cache, find, fntime, laps, last, write
 from ..runtime import Repeater, launch
 
 
@@ -106,10 +106,10 @@ class Fetcher(Object):
                 if uurl in seen:
                     continue
                 if self.dosave:
-                    sync(fed)
+                    write(fed)
                 result.append(fed)
             setattr(self.seen, feed.rss, urls)
-            self.seenfn = sync(self.seen, self.seenfn)
+            self.seenfn = write(self.seen, self.seenfn)
         if silent:
             return counter
         txt = ''
@@ -278,7 +278,7 @@ def dpl(event):
     for fnm, feed in find("rss", {'rss': event.args[0]}):
         if feed:
             update(feed, setter)
-            sync(feed, fnm)
+            write(feed, fnm)
     event.reply('ok')
 
 
@@ -290,7 +290,7 @@ def nme(event):
     for fnm, feed in find("rss", selector):
         if feed:
             feed.name = event.args[1]
-            sync(feed, fnm)
+            write(feed, fnm)
     event.reply('ok')
 
 
@@ -303,7 +303,7 @@ def rem(event):
             continue
         if feed:
             feed.__deleted__ = True
-            sync(feed, fnm)
+            write(feed, fnm)
     event.reply('ok')
 
 
@@ -316,7 +316,7 @@ def res(event):
             continue
         if feed:
             feed.__deleted__ = False
-            sync(feed, fnm)
+            write(feed, fnm)
     event.reply('ok')
 
 
@@ -340,7 +340,7 @@ def rss(event):
             return
     feed = Rss()
     feed.rss = event.args[0]
-    sync(feed)
+    write(feed)
     event.reply('ok')
 
 

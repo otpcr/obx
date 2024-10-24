@@ -18,7 +18,7 @@ import _thread
 
 from ..object  import Object, edit, keys
 from ..main    import NAME, command, fmt
-from ..persist import Cache, ident, last, sync
+from ..persist import Cache, ident, last, write
 from ..runtime import Reactor, later, launch
 
 
@@ -613,7 +613,7 @@ def cfg(event):
                    )
     else:
         edit(config, event.sets)
-        sync(config)
+        write(config)
         event.reply('ok')
 
 
