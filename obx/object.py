@@ -2,7 +2,7 @@
 # pylint: disable=C,R,W0105
 
 
-"a clean namespace"
+"OBX"
 
 
 import json
@@ -181,19 +181,23 @@ def dumps(*args, **kw):
     return json.dumps(*args, **kw)
 
 
+from .persist import find, read, write
+
+
 def __dir__():
     return (
         'Object',
         'construct',
         'dumps',
         'edit',
-        'fmt',
-        'fqn',
+        'find',
         'keys',
         'loads',
         'items',
         'match',
+        'read',
         'search',
         'update',
-        'values'
+        'values',
+        'write'
     )
