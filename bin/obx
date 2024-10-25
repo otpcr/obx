@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This file is place in the Public Domain.
 # pylint: disable=C
 
@@ -5,15 +6,28 @@
 "cli"
 
 
+import os
 import sys
 
 
-from .main    import Client, Config, Event, scanner, command, parse, wrap
-from .modules import face
-from .runtime import Errors
+sys.path.insert(0, os.getcwd())
+
+
+from obx.main    import Client, Config, Event, scanner, command, parse, wrap
+from obx.persist import Workdir
+from obx.runtime import Errors
 
 
 cfg = Config()
+
+
+sys.path.insert(0, Workdir.wdr)
+
+
+try:
+    from mods import face
+except ModuleNotFoundError:
+    face = None
 
 
 class CLI(Client):
@@ -36,12 +50,15 @@ def wrapped():
 
 def main():
     parse(cfg, " ".join(sys.argv[1:]))
-    scanner(face)
-    evt = Event()
-    evt.txt = cfg.txt
-    csl = CLI()
-    command(csl, evt)
-    evt.wait()
+    if face:
+        scanner(face)
+        evt = Event()
+        evt.txt = cfg.txt
+        csl = CLI()
+        command(csl, evt)
+        evt.wait()
+    else:
+        print(f"no modules in {Workdir.wdr}")
 
 
 if __name__ == "__main__":

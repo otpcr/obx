@@ -13,10 +13,10 @@ import time
 import _thread
 
 
-from . import Object, dump, load, search, update
+from .object import Object, dump, load, search, update
 
 
-NAME      = Object.__module__.split(".", maxsplit=1)[-1]
+NAME      = Object.__module__.split(".", maxsplit=2)[-2]
 cachelock = _thread.allocate_lock()
 disklock  = _thread.allocate_lock()
 lock      = _thread.allocate_lock()

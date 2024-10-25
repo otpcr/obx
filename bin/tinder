@@ -19,10 +19,19 @@ sys.path.insert(0, os.getcwd())
 
 from obx.main    import Client, Commands, Config, Event
 from obx.main    import parse, scanner
-from obx.modules import face
 from obx.object  import Object
 from obx.persist import NAME, Workdir, laps, skel
 from obx.runtime import Errors, later, launch
+
+
+sys.path.insert(0, Workdir.wdr)
+
+
+try:
+    from mods import face
+except ModuleNotFoundError:
+    face = None
+
 
 
 cfg = Config()
