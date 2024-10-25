@@ -9,11 +9,4 @@ import setuptools
 
 
 if __name__ == "__main__":
-    setuptools.setup(scripts=[
-        'bin/obx',
-        'bin/obxa',
-        'bin/obxc',
-        'bin/obxd',
-        'bin/obxs'
-    ]
-)
+    setuptools.setup()
