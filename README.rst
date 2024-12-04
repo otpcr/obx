@@ -1,7 +1,9 @@
 **NAME**
 
 
-OBX - a clean namespace.
+::
+
+    OBX - a clean namespace.
 
 
 **SYNOPSIS**
@@ -18,19 +20,18 @@ OBX - a clean namespace.
 **DESCRIPTION**
 
 
-*OBX* contains all the python3 code to program objects in a functional
-way. It provides a base Object class that has only dunder methods, all
-methods are factored out into functions with the objects as the first
-argument. It is called Object Programming (OP), OOP without the
-oriented.
+::
 
-*OBX* allows for easy json save//load to/from disk of objects. It
-provides an "clean namespace" Object class that only has dunder
-methods, so the namespace is not cluttered with method names. This
-makes storing and reading to/from json possible.
+    *OBX* contains all the python3 code to program objects in a functional
+    way. It provides a base Object class that has only dunder methods, all
+    methods are factored out into functions with the objects as the first
+    argument. It is called Object Programming (OP), OOP without the
+    oriented.
 
-
-*OBX* is Public Domain.
+    *OBX* allows for easy json save//load to/from disk of objects. It
+    provides an "clean namespace" Object class that only has dunder
+    methods, so the namespace is not cluttered with method names. This
+    makes storing and reading to/from json possible.
 
 
 **INSTALL**
@@ -43,23 +44,21 @@ makes storing and reading to/from json possible.
 
 **SOURCE**
 
+::
 
-source is at https://github.com/otpcr/obx
-
-
-**FILES**
-
-
-~/.local/pipx/venvs/obx/*
+    source is at https://github.com/otpcr/obx
 
 
 **AUTHOR**
 
+::
 
-Bart Thate <bthate@dds.nl>
+    Bart Thate <bthate@dds.nl>
 
 
 **COPYRIGHT**
 
 
-OBX is Public Domain.
+::
+
+    OBX is Public Domain.
