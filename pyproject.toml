@@ -7,8 +7,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "obx"
-description = "OBX"
-version = "20"
+description = "a clean namespace"
+version = "30"
 authors = [
     {name = "Bart Thate",email = "bthate@dds.nl"},
 ]
