@@ -1,11 +1,11 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C
+# pylint: disable=C,W0105,E0402
 
 
-"show errors"
+"errors"
 
 
-from obx.runtime import Errors
+from ..runtime import Errors
 
 
 def err(event):

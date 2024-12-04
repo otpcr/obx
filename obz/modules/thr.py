@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C
+# pylint: disable=C,W0105,E0402
 
 
 "running threads."
@@ -9,8 +9,10 @@ import threading
 import time
 
 
-from obx.object  import Object, update
-from obx.persist import laps
+from obx import Object, update
+
+
+from ..persist import laps
 
 
 STARTTIME = time.time()

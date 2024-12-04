@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C
+# pylint: disable=C,W0105,E0402
 
 
 "OPML"
@@ -12,8 +12,10 @@ import uuid
 import _thread
 
 
-from obx.object  import Object, update
-from obx.persist import find, write
+from obx import Object, update
+
+
+from ..persist import find, ident, spl, write
 
 
 from .rss import Rss
@@ -103,14 +105,6 @@ def shortid():
     return str(uuid.uuid4())[:8]
 
 
-def spl(txt):
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
-
-
 def striphtml(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
@@ -123,6 +117,9 @@ def unescape(text):
 
 def useragent(txt):
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
+
+
+"commands"
 
 
 def exp(event):
@@ -170,7 +167,7 @@ def imp(event):
             update(feed, obj)
             feed.rss = obj.xmlUrl
             feed.insertid = insertid
-            write(feed)
+            write(feed, ident(feed))
             nrs += 1
     if nrskip:
         event.reply(f"skipped {nrskip} urls.")

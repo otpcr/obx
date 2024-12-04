@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0611,W0718
+# pylint: disable=C,W0105,W0611,W0718,E0401
 
 
 "console"
@@ -16,24 +16,22 @@ import time
 sys.path.insert(0, os.getcwd())
 
 
-from obx.main    import Client, Config, Event, forever, parse, scanner
-from obx.persist import NAME, Workdir
-from obx.runtime import Errors, later
+from obz.control import command, scan
+from obz.modules import face
+from obz.parse   import parse
+from obz.persist import Config
+from obz.runtime import Client, Errors, Event, errors, forever, later
 
 
-cfg = Config()
-
-
-sys.path.insert(0, Workdir.wdr)
-
-
-try:
-    from mods import face
-except ModuleNotFoundError:
-    face = None
+cfg  = Config()
 
 
 class Console(Client):
+
+
+    def __init__(self):
+        Client.__init__(self)
+        self.register("command", command)
 
     def callback(self, evt):
         Client.callback(self, evt)
@@ -42,6 +40,7 @@ class Console(Client):
     def poll(self):
         evt = Event()
         evt.txt = input("> ")
+        evt.type = "command"
         return evt
 
     def raw(self, txt):
@@ -50,13 +49,7 @@ class Console(Client):
 
 def banner():
     tme = time.ctime(time.time()).replace("  ", " ")
-    print(f"{NAME.upper()} since {tme}")
-
-
-def errors():
-    for error in Errors.errors:
-        for line in error:
-            print(line)
+    print(f"{cfg.name.upper()} since {tme}")
 
 
 def wrap(func):
@@ -78,15 +71,15 @@ def wrap(func):
 
 def wrapped():
     wrap(main)
-    if "v" in cfg.opts:
-        errors()
+    for line in errors():
+        print(line)    
 
 
 def main():
     parse(cfg, " ".join(sys.argv[1:]))
     if "v" in cfg.opts:
         banner()
-    for mod, thr in scanner(face, init="i" in cfg.opts, disable=cfg.sets.dis):
+    for mod, thr in scan(face, init="i" in cfg.opts, disable=cfg.sets.dis):
         if "v" in cfg.opts and "output" in dir(mod):
             mod.output = print
         if thr and "w" in cfg.opts:

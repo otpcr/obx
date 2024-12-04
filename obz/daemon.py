@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C,W0212
+# pylint: disable=C0116,C0415,W0212,E0402
 
 
 "daemon"
@@ -10,20 +9,8 @@ import os
 import sys
 
 
-sys.path.insert(0, os.getcwd())
-
-
-from obx.main    import forever, privileges, scanner, wrap
-from obx.persist import NAME, Workdir, pidfile, pidname
-
-
-sys.path.insert(0, Workdir.wdr)
-
-
-try:
-    from mods import face
-except ModuleNotFoundError:
-    face = None
+from .persist import Config, pidfile, pidname
+from .runtime import errors, forever, privileges, scan, wrap
 
 
 def daemon(verbose=False):
@@ -48,13 +35,16 @@ def daemon(verbose=False):
 
 def wrapped():
     wrap(main)
+    for line in errors():
+        print(line)
 
 
 def main():
-    daemon()
+    daemon(True)
     privileges()
-    pidfile(pidname(NAME))
-    scanner(face, init=True)
+    pidfile(pidname(Config.name))
+    from .modules import face
+    scan(face, init=True)
     forever()
 
 

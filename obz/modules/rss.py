@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R,W0105,W0622
+# pylint: disable=C,R,W0105,W0622,E0402
 
 
 "rich site syndicate"
@@ -19,10 +19,11 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from obx.main    import fmt
-from obx.object  import Object, update
-from obx.persist import Cache, find, fntime, laps, last, write
-from obx.runtime import Repeater, launch
+from obx import Object, format, update
+
+
+from ..persist import Cache, find, fntime, laps, last, ident, spl, write
+from ..runtime import Repeater, launch
 
 
 DEBUG = False
@@ -106,10 +107,12 @@ class Fetcher(Object):
                 if uurl in seen:
                     continue
                 if self.dosave:
-                    write(fed)
+                    write(fed, ident(fed))
                 result.append(fed)
             setattr(self.seen, feed.rss, urls)
-            self.seenfn = write(self.seen, self.seenfn)
+            if not self.seenfn:
+                self.seenfn = ident(self.seen)
+            write(self.seen, self.seenfn)
         if silent:
             return counter
         txt = ''
@@ -244,14 +247,6 @@ def shortid():
     return str(uuid.uuid4())[:8]
 
 
-def spl(txt):
-    try:
-        result = txt.split(',')
-    except (TypeError, ValueError):
-        result = txt
-    return [x for x in result if x]
-
-
 def striphtml(text):
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
@@ -263,7 +258,6 @@ def unescape(text):
 
 
 def useragent(txt):
-    "return useragent."
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
 
 
@@ -326,7 +320,7 @@ def rss(event):
         for fnm, feed in find('rss'):
             nrs += 1
             elp = laps(time.time()-fntime(fnm))
-            txt = fmt(feed)
+            txt = format(feed)
             event.reply(f'{nrs} {txt} {elp}')
         if not nrs:
             event.reply('no rss feed found.')
@@ -340,7 +334,7 @@ def rss(event):
             return
     feed = Rss()
     feed.rss = event.args[0]
-    write(feed)
+    write(feed, ident(feed))
     event.reply('ok')
 
 

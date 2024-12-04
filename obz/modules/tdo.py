@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=C,R
+# pylint: disable=C,R,W0105,E0402
 
 
 "todo list"
@@ -8,8 +8,10 @@
 import time
 
 
-from obx.object  import Object
-from obx.persist import find, fntime, laps, write
+from obx import Object
+
+
+from ..persist import find, fntime, ident, laps, write
 
 
 class Todo(Object):
@@ -47,5 +49,5 @@ def tdo(event):
         return
     obj = Todo()
     obj.txt = event.rest
-    write(obj)
+    write(obj, ident(obj))
     event.reply('ok')
