@@ -22,6 +22,28 @@ PACKAGE = [
 ]
 
 
+MODULE = [
+    'Object',
+    'ObjectDecoder',
+    'ObjectEncoder',
+    'construct',
+    'dump',
+    'dumps',
+    'edit',
+    'format',
+    'hook',
+    'items',
+    'keys',
+    'load',
+    'loads',
+    'match',
+    'search',
+    'update',
+    'values'
+]
+
+
+
 METHODS = [
     '__class__',
     '__delattr__',
@@ -57,6 +79,16 @@ class TestInterface(unittest.TestCase):
         okd = True
         for mod in PACKAGE:
             mod1 = getattr(obx, mod, None)
+            if not mod1:
+                okd = False
+                print(mod)
+                break
+        self.assertTrue(okd)
+
+    def test_module(self):
+        okd = True
+        for attr in MODULE:
+            mod1 = getattr(obx, attr, None)
             if not mod1:
                 okd = False
                 print(mod)
