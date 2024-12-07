@@ -189,3 +189,25 @@ def dump(*args, **kw):
 def dumps(*args, **kw):
     kw["cls"] = ObjectEncoder
     return json.dumps(*args, **kw)
+
+
+def __dir__():
+    return (
+        'Object',
+        'ObjectDecoder',
+        'ObjectEncoder',
+        'construct',
+        'dump',
+        'dumps',
+        'edit',
+        'format',
+        'hook',
+        'items',
+        'keys',
+        'load',
+        'loads',
+        'match',
+        'search',
+        'update',
+        'values'
+    )
